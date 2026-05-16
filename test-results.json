@@ -1,0 +1,811 @@
+{
+  "config": {
+    "configFile": "/Users/ankithsa/ai-testing-platform/playwright.config.js",
+    "rootDir": "/Users/ankithsa/ai-testing-platform/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ankithsa/ai-testing-platform/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/ankithsa/ai-testing-platform/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/ankithsa/ai-testing-platform/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/ankithsa/ai-testing-platform/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/ankithsa/ai-testing-platform/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/ankithsa/ai-testing-platform/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "example.spec.js",
+      "file": "example.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AI Search Bot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1802,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "AI automation test successful\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:17.824Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dd9b2edffe9b7501040c-35eca4baffa662ff60b5",
+          "file": "example.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "AI Search Bot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 3929,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "AI automation test successful\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:21.778Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dd9b2edffe9b7501040c-0e5b7a33626983de073e",
+          "file": "example.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "AI Search Bot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 3495,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "AI automation test successful\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:30.585Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dd9b2edffe9b7501040c-72da0e872e0ed92a09cd",
+          "file": "example.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "failure-test.spec.js",
+      "file": "failure-test.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Failure Detection Demo",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 5860,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n\n    at /Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js:9:6",
+                    "location": {
+                      "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                      "column": 6,
+                      "line": 9
+                    },
+                    "snippet": "   7 |   // Intentional failure\n   8 |   await expect(page.locator('h1'))\n>  9 |     .toContainText('Wrong Title');\n     |      ^\n  10 |\n  11 | });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                        "column": 6,
+                        "line": 9
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n\n\n   7 |   // Intentional failure\n   8 |   await expect(page.locator('h1'))\n>  9 |     .toContainText('Wrong Title');\n     |      ^\n  10 |\n  11 | });\n    at /Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js:9:6"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:17.817Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankithsa/ai-testing-platform/test-results/failure-test-Failure-Detection-Demo-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                    "column": 6,
+                    "line": 9
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e33bb0f545e1b53c197e-59f1eb7ca18691c5179d",
+          "file": "failure-test.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Failure Detection Demo",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 2,
+                  "status": "failed",
+                  "duration": 7464,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    13 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    13 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n\n    at /Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js:9:6",
+                    "location": {
+                      "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                      "column": 6,
+                      "line": 9
+                    },
+                    "snippet": "   7 |   // Intentional failure\n   8 |   await expect(page.locator('h1'))\n>  9 |     .toContainText('Wrong Title');\n     |      ^\n  10 |\n  11 | });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                        "column": 6,
+                        "line": 9
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    13 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n\n\n   7 |   // Intentional failure\n   8 |   await expect(page.locator('h1'))\n>  9 |     .toContainText('Wrong Title');\n     |      ^\n  10 |\n  11 | });\n    at /Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js:9:6"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:22.050Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankithsa/ai-testing-platform/test-results/failure-test-Failure-Detection-Demo-firefox/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                    "column": 6,
+                    "line": 9
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e33bb0f545e1b53c197e-2c899460b6e4f944daf1",
+          "file": "failure-test.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Failure Detection Demo",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 7112,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    13 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    13 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n\n    at /Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js:9:6",
+                    "location": {
+                      "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                      "column": 6,
+                      "line": 9
+                    },
+                    "snippet": "   7 |   // Intentional failure\n   8 |   await expect(page.locator('h1'))\n>  9 |     .toContainText('Wrong Title');\n     |      ^\n  10 |\n  11 | });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                        "column": 6,
+                        "line": 9
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Wrong Title\"\u001b[39m\nReceived string:    \u001b[31m\"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    13 × locator resolved to <h1 class=\"hero__title heroTitle_ohkl\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Playwright enables reliable web automation for testing, scripting, and AI agents.\"\u001b[22m\n\n\n   7 |   // Intentional failure\n   8 |   await expect(page.locator('h1'))\n>  9 |     .toContainText('Wrong Title');\n     |      ^\n  10 |\n  11 | });\n    at /Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js:9:6"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:30.585Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankithsa/ai-testing-platform/test-results/failure-test-Failure-Detection-Demo-webkit/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankithsa/ai-testing-platform/tests/failure-test.spec.js",
+                    "column": 6,
+                    "line": 9
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e33bb0f545e1b53c197e-24d966cae2bbfc3b1ff7",
+          "file": "failure-test.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "playwright-homepage-test.spec.js",
+      "file": "playwright-homepage-test.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Playwright Homepage Test",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1099,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "AI generated test executed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:17.825Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eec8584f843679bb347f-8e8cc179f87dba92cfa5",
+          "file": "playwright-homepage-test.spec.js",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "Playwright Homepage Test",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2615,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "AI generated test executed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:22.278Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eec8584f843679bb347f-ff2d422945314e3bad88",
+          "file": "playwright-homepage-test.spec.js",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "Playwright Homepage Test",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2745,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "AI generated test executed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:31.510Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eec8584f843679bb347f-420359e839dfd7c40569",
+          "file": "playwright-homepage-test.spec.js",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "self-healing.spec.js",
+      "file": "self-healing.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Self Healing AI Test",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1125,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Primary selector failed\n"
+                    },
+                    {
+                      "text": "AI attempting self-healing...\n"
+                    },
+                    {
+                      "text": "AI found alternative selector\n"
+                    },
+                    {
+                      "text": "Self-healing test successful\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:17.845Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c926794975ad27a4252b-8651cd400b632e17eaca",
+          "file": "self-healing.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Self Healing AI Test",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2447,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Primary selector failed\n"
+                    },
+                    {
+                      "text": "AI attempting self-healing...\n"
+                    },
+                    {
+                      "text": "AI found alternative selector\n"
+                    },
+                    {
+                      "text": "Self-healing test successful\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:26.965Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c926794975ad27a4252b-7dc8c85c2f4ccc2136ae",
+          "file": "self-healing.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Self Healing AI Test",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1616,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Primary selector failed\n"
+                    },
+                    {
+                      "text": "AI attempting self-healing...\n"
+                    },
+                    {
+                      "text": "AI found alternative selector\n"
+                    },
+                    {
+                      "text": "Self-healing test successful\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:35.128Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c926794975ad27a4252b-e14cc366a68f87afb46f",
+          "file": "self-healing.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "visual-test.spec.js",
+      "file": "visual-test.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AI Visual Testing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 396,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Visual AI test completed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:21.177Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ec7afa9f2b86d43a2c03-82b20dc5445f427edb0f",
+          "file": "visual-test.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "AI Visual Testing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1125,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Visual AI test completed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:28.313Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ec7afa9f2b86d43a2c03-d12193c5b5007c7ef0bb",
+          "file": "visual-test.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "AI Visual Testing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 892,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Visual AI test completed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-12T18:26:37.054Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ec7afa9f2b86d43a2c03-f3c99598ea7f4627a7ba",
+          "file": "visual-test.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-05-12T18:26:17.239Z",
+    "duration": 24190.093,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

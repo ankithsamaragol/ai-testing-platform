@@ -1,0 +1,28 @@
+
+================================
+        AI BUG REPORT
+================================
+
+Generated:
+5/12/2026, 7:38:46 PM
+
+Test Name:
+Failure Detection Demo
+
+Issue:
+Expected title did not match actual title
+
+Severity:
+High
+
+AI Analysis:
+Possible UI mismatch, selector failure,
+or unexpected application behavior detected.
+
+Suggested Fix:
+1. Verify selectors
+2. Check UI rendering
+3. Validate expected text
+4. Review recent frontend changes
+
+================================

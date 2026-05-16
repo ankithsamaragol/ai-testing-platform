@@ -1,0 +1,20 @@
+
+AI BUG REPORT
+=========================
+
+Test Name:
+Failure Detection Demo
+
+Issue:
+Expected title did not match actual title
+
+Severity:
+Medium
+
+AI Analysis:
+Possible UI mismatch or unexpected application behavior detected.
+
+Suggested Fix:
+Check page content, selectors, or application rendering logic.
+
+=========================
