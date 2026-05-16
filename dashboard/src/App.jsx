@@ -2,6 +2,7 @@ import {BarChart,Bar,XAxis,YAxis,Tooltip} from 'recharts';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import './App.css';
+const API_URL = import.meta.env.VITE_API_URL || '${API_URL}';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,7 +40,7 @@ function App() {
   const loadProjects = async () => {
     const token = localStorage.getItem('ai-token');
 
-    const response = await fetch('http://localhost:8000/projects', {
+    const response = await fetch('${API_URL}/projects', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -55,7 +56,7 @@ function App() {
   const loadTestHistory = async () => {
     const token = localStorage.getItem('ai-token');
 
-    const response = await fetch('http://localhost:8000/test-history', {
+    const response = await fetch('${API_URL}/test-history', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -95,7 +96,7 @@ function App() {
       loadTestHistory();
     }
 
-    const socket = io('http://localhost:8000');
+    const socket = io('${API_URL}');
 
     socket.on('test-log', (data) => {
       setLogs((prevLogs) =>
@@ -114,7 +115,7 @@ function App() {
   };
 
   const signup = async () => {
-    const response = await fetch('http://localhost:8000/signup', {
+    const response = await fetch('${API_URL}/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(authForm)
@@ -129,7 +130,7 @@ function App() {
   };
 
   const login = async () => {
-    const response = await fetch('http://localhost:8000/login', {
+    const response = await fetch('${API_URL}/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -164,7 +165,7 @@ function App() {
 
     const token = localStorage.getItem('ai-token');
 
-    const response = await fetch('http://localhost:8000/projects', {
+    const response = await fetch('${API_URL}/projects', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -202,7 +203,7 @@ function App() {
     setPopup('Scanning website...');
 
     const response = await fetch(
-      `http://localhost:8000/scan-site?url=${encodeURIComponent(url.trim())}`
+      `${API_URL}/scan-site?url=${encodeURIComponent(url.trim())}`
     );
 
     const data = await response.json();
@@ -222,7 +223,7 @@ function App() {
     }
 
     const response = await fetch(
-      `http://localhost:8000/generate-test?url=${encodeURIComponent(url.trim())}`
+      `${API_URL}/generate-test?url=${encodeURIComponent(url.trim())}`
     );
 
     const data = await response.json();
@@ -238,7 +239,7 @@ function App() {
     }
 
     const response = await fetch(
-      `http://localhost:8000/generate-suite?url=${encodeURIComponent(url.trim())}`
+      `${API_URL}/generate-suite?url=${encodeURIComponent(url.trim())}`
     );
 
     const data = await response.json();
@@ -272,7 +273,7 @@ const scheduleTests = async () => {
 
   const token = localStorage.getItem('ai-token');
 
-  const response = await fetch('http://localhost:8000/schedule-tests', {
+  const response = await fetch('${API_URL}/schedule-tests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -295,7 +296,7 @@ const loadProjectSchedule = async (projectId) => {
 
   const token = localStorage.getItem('ai-token');
 
-  const response = await fetch(`http://localhost:8000/schedule/${projectId}`, {
+  const response = await fetch(`${API_URL}/schedule/${projectId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -316,7 +317,7 @@ const stopSchedule = async () => {
 
   const token = localStorage.getItem('ai-token');
 
-  const response = await fetch('http://localhost:8000/stop-schedule', {
+  const response = await fetch('${API_URL}/stop-schedule', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`
@@ -337,7 +338,7 @@ const stopSchedule = async () => {
     setProgress(15);
 
     try {
-      const response = await fetch('http://localhost:8000/run-tests');
+      const response = await fetch('${API_URL}/run-tests');
       const data = await response.json();
 
       setProgress(75);
@@ -430,7 +431,7 @@ AI detected broken selectors and recovered automatically using alternative selec
       const token = localStorage.getItem('ai-token');
 
       if (selectedProject) {
-        await fetch('http://localhost:8000/test-history', {
+        await fetch('${API_URL}/test-history', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -602,7 +603,7 @@ const failRate = latestRun
 
           <button
             className="report-btn"
-            onClick={() => window.open('http://localhost:8000/download-report')}
+            onClick={() => window.open('${API_URL}/download-report')}
           >
             📄 Download PDF Report
           </button>

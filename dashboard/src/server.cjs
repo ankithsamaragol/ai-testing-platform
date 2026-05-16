@@ -603,7 +603,7 @@ app.get('/run-tests', (req, res) => {
     matches.forEach((match) => {
 
       screenshots.push(
-        'http://localhost:8000/' + match
+        '${API_URL}/' + match
       );
 
     });
