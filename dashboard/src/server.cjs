@@ -606,8 +606,8 @@ app.get('/run-tests', (req, res) => {
     matches.forEach((match) => {
 
       screenshots.push(
-        `${API_URL}/` + match
-      );
+  `https://ai-testing-platform-production.up.railway.app/${match}`
+);
 
     });
 
