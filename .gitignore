@@ -1,4 +1,16 @@
-
+node_modules/
+.env
+dashboard/.env
+*.db
+*.sqlite
+test-results/
+reports/
+screenshots/
+playwright-report/
+dashboard/test-results/
+dashboard/ai-testing.db
+dashboard/test-report.pdf
+*.log
 # Playwright
 node_modules/
 /test-results/
