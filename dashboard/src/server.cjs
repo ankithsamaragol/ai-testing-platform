@@ -263,6 +263,8 @@ app.post('/test-history', verifyToken, (req, res) => {
   (err) => {
 
     if (err) {
+      console.log('Test history save failed:', err.message);
+      
       return res.json({
         success: false,
         message: 'Failed to save test history'
@@ -603,7 +605,7 @@ app.get('/run-tests', (req, res) => {
     matches.forEach((match) => {
 
       screenshots.push(
-        '${API_URL}/' + match
+        `${API_URL}/` + match
       );
 
     });
