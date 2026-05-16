@@ -77,10 +77,10 @@ app.post('/signup', async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  db.run(
-    'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-    [name, email, hashedPassword],
-    function (err) {
+db.query(
+  'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
+  [name, email, hashedPassword],
+  (err) => {
 
       if (err) {
         return res.json({
@@ -103,10 +103,12 @@ app.post('/login', (req, res) => {
 
   const { email, password } = req.body;
 
-  db.get(
-    'SELECT * FROM users WHERE email = ?',
-    [email],
-    async (err, user) => {
+  db.query(
+  'SELECT * FROM users WHERE email = $1',
+  [email],
+  async (err, result) => {
+
+    const user = result?.rows?.[0];
 
       if (err || !user) {
         return res.json({
@@ -193,35 +195,37 @@ app.post('/projects', verifyToken, (req, res) => {
     });
   }
 
-  db.run(
-    'INSERT INTO projects (user_id, name, url) VALUES (?, ?, ?)',
-    [req.user.id, name, url],
-    function (err) {
+  db.query(
+  'INSERT INTO projects (user_id, name, url) VALUES ($1, $2, $3) RETURNING id',
+  [req.user.id, name, url],
+  (err, result) => {
 
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'Failed to create project'
-        });
-      }
-
-      res.json({
-        success: true,
-        message: 'Project created successfully',
-        projectId: this.lastID
+    if (err) {
+      return res.json({
+        success: false,
+        message: 'Failed to create project'
       });
-
     }
-  );
+
+    res.json({
+      success: true,
+      message: 'Project created successfully',
+      projectId: result.rows[0].id
+    });
+
+  }
+);
 
 });
 
 app.get('/projects', verifyToken, (req, res) => {
 
-  db.all(
-    'SELECT * FROM projects WHERE user_id = ? ORDER BY created_at DESC',
-    [req.user.id],
-    (err, rows) => {
+  db.query(
+  'SELECT * FROM projects WHERE user_id = $1 ORDER BY created_at DESC',
+  [req.user.id],
+  (err, result) => {
+
+    const rows = result?.rows || [];
 
       if (err) {
         return res.json({
@@ -251,44 +255,38 @@ app.post('/test-history', verifyToken, (req, res) => {
     logs
   } = req.body;
 
-  db.run(
-    `INSERT INTO test_history 
-    (user_id, project_id, project_name, total, passed, failed, logs)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [
-      req.user.id,
-      project_id,
-      project_name,
-      total,
-      passed,
-      failed,
-      logs
-    ],
-    function (err) {
+ db.query(
+  `INSERT INTO test_history
+   (user_id, project_id, project_name, total, passed, failed, logs)
+   VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+  [req.user.id, project_id, project_name, total, passed, failed, logs],
+  (err) => {
 
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'Failed to save test history'
-        });
-      }
-
-      res.json({
-        success: true,
-        message: 'Test history saved'
+    if (err) {
+      return res.json({
+        success: false,
+        message: 'Failed to save test history'
       });
-
     }
-  );
+
+    res.json({
+      success: true,
+      message: 'Test history saved'
+    });
+
+  }
+);
 
 });
 
 app.get('/test-history', verifyToken, (req, res) => {
 
-  db.all(
-    'SELECT * FROM test_history WHERE user_id = ? ORDER BY created_at DESC',
-    [req.user.id],
-    (err, rows) => {
+  db.query(
+  'SELECT * FROM test_history WHERE user_id = $1 ORDER BY created_at DESC',
+  [req.user.id],
+  (err, result) => {
+
+    const rows = result?.rows || [];
 
       if (err) {
         return res.json({
@@ -465,86 +463,95 @@ app.post('/schedule-tests', verifyToken, (req, res) => {
     });
   }
 
-  db.run(
-    'DELETE FROM schedules WHERE user_id = ? AND project_id = ?',
-    [req.user.id, project_id],
-    function () {
+  db.query(
+  'DELETE FROM schedules WHERE user_id = $1 AND project_id = $2',
+  [req.user.id, project_id],
+  (err) => {
 
-      db.run(
-        'INSERT INTO schedules (user_id, project_id, frequency, enabled) VALUES (?, ?, ?, ?)',
-        [req.user.id, project_id, frequency, 1],
-        function (err) {
-
-          if (err) {
-            return res.json({
-              success: false,
-              message: 'Failed to save schedule'
-            });
-          }
-
-          const cronTime = getCronTime(frequency);
-
-if (scheduledJobs[project_id]) {
-  scheduledJobs[project_id].stop();
-}
-
-scheduledJobs[project_id] = cron.schedule(cronTime, () => {
-
-  console.log(`Scheduled test run triggered for project ${project_id}`);
-
-  const testProcess = spawn('npx', ['playwright', 'test'], {
-    cwd: '..',
-    shell: true,
-    env: {
-      ...process.env,
-      NODE_NO_WARNINGS: '1'
+    if (err) {
+      return res.json({
+        success: false,
+        message: 'Failed to update schedule'
+      });
     }
-  });
 
-  testProcess.stdout.on('data', (data) => {
-    io.emit('test-log', data.toString());
-  });
+    db.query(
+      'INSERT INTO schedules (user_id, project_id, frequency, enabled) VALUES ($1, $2, $3, $4)',
+      [req.user.id, project_id, frequency, 1],
+      (err) => {
 
-  testProcess.stderr.on('data', (data) => {
-    io.emit('test-log', data.toString());
-  });
-
-});
-
-res.json({
-  success: true,
-  message: `Schedule saved for project: ${frequency}`
-});
-
+        if (err) {
+          return res.json({
+            success: false,
+            message: 'Failed to save schedule'
+          });
         }
-      );
 
-    }
-  );
+        const cronTime = getCronTime(frequency);
+
+        if (scheduledJobs[project_id]) {
+          scheduledJobs[project_id].stop();
+        }
+
+        scheduledJobs[project_id] = cron.schedule(cronTime, () => {
+
+          console.log(`Scheduled test run triggered for project ${project_id}`);
+
+          const testProcess = spawn('npx', ['playwright', 'test'], {
+            cwd: '..',
+            shell: true,
+            env: {
+              ...process.env,
+              NODE_NO_WARNINGS: '1'
+            }
+          });
+
+          testProcess.stdout.on('data', (data) => {
+            io.emit('test-log', data.toString());
+          });
+
+          testProcess.stderr.on('data', (data) => {
+            io.emit('test-log', data.toString());
+          });
+
+        });
+
+        res.json({
+          success: true,
+          message: `Schedule saved for project: ${frequency}`
+        });
+
+      }
+    );
+
+  }
+);
 
 });
 
 app.get('/schedule/:projectId', verifyToken, (req, res) => {
 
-  db.get(
-    'SELECT * FROM schedules WHERE user_id = ? AND project_id = ? AND enabled = 1',
-    [req.user.id, req.params.projectId],
-    (err, row) => {
+  db.query(
+  'SELECT * FROM schedules WHERE user_id = $1 AND project_id = $2 AND enabled = 1',
+  [req.user.id, req.params.projectId],
+  (err, result) => {
 
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'Failed to load schedule'
-        });
-      }
+    const row = result?.rows?.[0];
 
-      res.json({
-        success: true,
-        schedule: row || null
+    if (err) {
+      return res.json({
+        success: false,
+        message: 'Failed to load schedule'
       });
-
     }
-  );
+
+    res.json({
+      success: true,
+      schedule: row || null
+    });
+
+  }
+);
 
 });
 
@@ -646,10 +653,12 @@ Open the AI Tester dashboard and review Failure Investigation, screenshots, and 
 
 });
 
-db.all(
+db.query(
   'SELECT * FROM schedules WHERE enabled = 1',
   [],
-  (err, rows) => {
+  (err, result) => {
+
+    const rows = result?.rows || [];
 
     if (err || !rows) {
       console.log('No saved schedules loaded');
