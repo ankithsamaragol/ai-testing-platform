@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd dashboard && npm install"]
+
+[start]
+cmd = "cd dashboard && node src/server.cjs"
