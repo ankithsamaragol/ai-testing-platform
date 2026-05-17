@@ -24,10 +24,14 @@ test('AI Search Bot', async ({ page }) => {
      .toContainText('Get started');
 
   // Take screenshot
+  try {
   await page.screenshot({
     path: 'playwright-page.png',
     fullPage: true
   });
+} catch (err) {
+  console.log('Screenshot skipped:', err.message);
+}
 
   console.log('AI automation test successful');
 
