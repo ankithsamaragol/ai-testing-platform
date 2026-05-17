@@ -336,6 +336,18 @@ const stopSchedule = async () => {
     setPopup('Running AI Tests...');
     setTestStatus('Running AI tests...');
     setProgress(15);
+    
+        if (!generatedCode && url) {
+      const previewResponse = await fetch(
+        `${API_URL}/generate-test?url=${encodeURIComponent(url.trim())}`
+      );
+
+      const previewData = await previewResponse.json();
+
+      if (previewData.code) {
+        setGeneratedCode(previewData.code);
+      }
+    }
 
     try {
       const response = await fetch(`${API_URL}/run-tests`);
