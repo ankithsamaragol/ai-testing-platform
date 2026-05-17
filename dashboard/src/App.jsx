@@ -336,7 +336,7 @@ const stopSchedule = async () => {
     setPopup('Running AI Tests...');
     setTestStatus('Running AI tests...');
     setProgress(15);
-    
+
         if (!generatedCode && url) {
       const previewResponse = await fetch(
         `${API_URL}/generate-test?url=${encodeURIComponent(url.trim())}`
@@ -695,7 +695,7 @@ const failRate = latestRun
                   <h3>{item.project_name}</h3>
                   <p>✅ {item.passed} Passed | ❌ {item.failed} Failed</p>
                   <p>Total: {item.total}</p>
-                  <small>{new Date(item.created_at + 'Z').toLocaleString('de-DE')}</small>
+                  <small>{new Date(item.created_at).toLocaleString('de-DE')}</small>
                 </div>
               ))
             )}
@@ -714,7 +714,7 @@ const failRate = latestRun
     <p><strong>Total:</strong> {selectedHistory.total}</p>
     <p><strong>Passed:</strong> {selectedHistory.passed}</p>
     <p><strong>Failed:</strong> {selectedHistory.failed}</p>
-    <p><strong>Run Time:</strong> {new Date(selectedHistory.created_at + 'Z').toLocaleString('de-DE')}</p>
+    <p><strong>Run Time:</strong> {new Date(selectedHistory.created_at).toLocaleString('de-DE')}</p>
 
 {selectedHistory.failed > 0 && (
   <div className="browser-impact">
