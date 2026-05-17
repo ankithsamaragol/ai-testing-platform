@@ -202,6 +202,7 @@ app.post('/projects', verifyToken, (req, res) => {
   (err, result) => {
 
     if (err) {
+      console.log('Create project failed:', err.message);
       return res.json({
         success: false,
         message: 'Failed to create project'
@@ -229,6 +230,7 @@ app.get('/projects', verifyToken, (req, res) => {
     const rows = result?.rows || [];
 
       if (err) {
+        console.log('Load projects failed:', err.message);
         return res.json({
           success: false,
           message: 'Failed to load projects'
@@ -292,6 +294,7 @@ app.get('/test-history', verifyToken, (req, res) => {
     const rows = result?.rows || [];
 
       if (err) {
+        console.log('Load history failed:', err.message);
         return res.json({
           success: false,
           message: 'Failed to load test history'
