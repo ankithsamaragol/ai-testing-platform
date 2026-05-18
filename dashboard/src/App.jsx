@@ -110,9 +110,12 @@ function App() {
  useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const githubToken = params.get('token');
+  const githubUser = params.get('user');
 
-  if (githubToken) {
+  if (githubToken && githubUser) {
     localStorage.setItem('ai-token', githubToken);
+    localStorage.setItem('ai-user', githubUser);
+
     window.history.replaceState({}, document.title, '/');
     window.location.reload();
   }

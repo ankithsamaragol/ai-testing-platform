@@ -189,8 +189,14 @@ if (!primaryEmail) {
       { expiresIn: '7d' }
     );
 
-   res.redirect(
-  `https://ai-testing-platform-one.vercel.app/?token=${token}`
+   const encodedUser = encodeURIComponent(JSON.stringify({
+  id: user.id,
+  name: user.name,
+  email: user.email
+}));
+
+res.redirect(
+  `https://ai-testing-platform-one.vercel.app/?token=${token}&user=${encodedUser}`
 );
 
   } catch (error) {
