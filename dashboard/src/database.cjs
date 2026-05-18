@@ -52,4 +52,14 @@ db.query(`
   )
 `);
 
+db.query(`
+  CREATE TABLE IF NOT EXISTS github_connections (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    github_username TEXT,
+    github_access_token TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
 module.exports = db;

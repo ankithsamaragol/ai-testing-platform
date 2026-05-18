@@ -180,6 +180,18 @@ if (!primaryEmail) {
       user = result.rows[0];
     }
 
+    await db.query(
+  `DELETE FROM github_connections WHERE user_id = $1`,
+  [user.id]
+);
+
+await db.query(
+  `INSERT INTO github_connections
+   (user_id, github_username, github_access_token)
+   VALUES ($1, $2, $3)`,
+  [user.id, githubUser.login, accessToken]
+);
+
     const token = jwt.sign(
       {
         id: user.id,
@@ -202,6 +214,53 @@ res.redirect(
   } catch (error) {
     console.log(error.message);
     res.send('GitHub login failed');
+  }
+});
+
+app.get('/github/repos', verifyToken, async (req, res) => {
+  try {
+    const connection = await db.query(
+      'SELECT * FROM github_connections WHERE user_id = $1',
+      [req.user.id]
+    );
+
+    if (connection.rows.length === 0) {
+      return res.json({
+        success: false,
+        message: 'GitHub not connected'
+      });
+    }
+
+    const accessToken = connection.rows[0].github_access_token;
+
+    const reposResponse = await axios.get(
+      'https://api.github.com/user/repos?sort=updated&per_page=20',
+      {
+        headers: {
+          Authorization: `token ${accessToken}`
+        }
+      }
+    );
+
+    res.json({
+      success: true,
+      repos: reposResponse.data.map(repo => ({
+        id: repo.id,
+        name: repo.name,
+        full_name: repo.full_name,
+        private: repo.private,
+        html_url: repo.html_url,
+        updated_at: repo.updated_at
+      }))
+    });
+
+  } catch (err) {
+    console.log('GitHub repos failed:', err.message);
+
+    res.json({
+      success: false,
+      message: 'Failed to load GitHub repositories'
+    });
   }
 });
 
