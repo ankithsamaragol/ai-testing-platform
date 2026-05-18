@@ -748,8 +748,15 @@ const failRate = latestRun
                   className="project-card"
                   onClick={() => selectProject(project)}
                 >
-                  <h3>{project.name}</h3>
-                  <p>{project.url}</p>
+                 <h3>{project.name}</h3>
+<p>{project.url}</p>
+
+{project.github_repo && (
+  <>
+    <p><strong>GitHub:</strong> {project.github_repo}</p>
+    <p><strong>Branch:</strong> {project.github_branch || 'main'}</p>
+  </>
+)}
                 </div>
               ))
             )}
