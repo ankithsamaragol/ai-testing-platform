@@ -36,6 +36,7 @@ function App() {
   const [generatedCode, setGeneratedCode] = useState('');
   const [scanResults, setScanResults] = useState(null);
   const [testStatus, setTestStatus] = useState('Idle');
+  const [githubRepos, setGithubRepos] = useState([]);
 
   const loadProjects = async () => {
     const token = localStorage.getItem('ai-token');
@@ -52,6 +53,25 @@ function App() {
       setProjects(data.projects);
     }
   };
+
+  const loadGithubRepos = async () => {
+  const token = localStorage.getItem('ai-token');
+
+  const response = await fetch(`${API_URL}/github/repos`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+
+  if (data.success) {
+    setGithubRepos(data.repos);
+    setPopup('GitHub repositories loaded');
+  } else {
+    setPopup(data.message);
+  }
+};
 
   const loadTestHistory = async () => {
     const token = localStorage.getItem('ai-token');
@@ -657,6 +677,7 @@ const failRate = latestRun
             <button onClick={generateTest}>🧠 Generate AI Test</button>
             <button onClick={generateSuite}>📦 Generate Test Suite</button>
             <button className="orange" onClick={autonomousAITest}>🚀 Autonomous AI Test</button>
+            <button onClick={loadGithubRepos}>🐙 Load GitHub Repositories</button>
           </div>
 
           <button className="run-btn" onClick={runTests}>
@@ -704,6 +725,26 @@ const failRate = latestRun
             )}
           </div>
         </section>
+
+        {githubRepos.length > 0 && (
+  <div className="github-repos">
+    <h2>🐙 GitHub Repositories</h2>
+
+    {githubRepos.map((repo) => (
+      <div key={repo.id} className="repo-card">
+        <strong>{repo.name}</strong>
+        <p>{repo.full_name}</p>
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open Repository
+        </a>
+      </div>
+    ))}
+  </div>
+)}
 
         <section className="panel">
           <h2>📜 Test History</h2>
