@@ -15,6 +15,7 @@ const { spawn } = require('child_process');
 const http = require('http');
 const { Server } = require('socket.io');
 const { Resend } = require('resend');
+const axios = require('axios');
 
 const app = express();
 
@@ -98,6 +99,87 @@ db.query(
     }
   );
 
+});
+
+app.get('/auth/github', (req, res) => {
+  const githubURL =
+    `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=repo,user`;
+
+  res.redirect(githubURL);
+});
+
+app.get('/github/callback', async (req, res) => {
+  const code = req.query.code;
+
+  try {
+    const tokenResponse = await axios.post(
+      'https://github.com/login/oauth/access_token',
+      {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code
+      },
+      {
+        headers: {
+          Accept: 'application/json'
+        }
+      }
+    );
+
+    const accessToken = tokenResponse.data.access_token;
+
+    const userResponse = await axios.get(
+      'https://api.github.com/user',
+      {
+        headers: {
+          Authorization: `token ${accessToken}`
+        }
+      }
+    );
+
+    const githubUser = userResponse.data;
+
+    let result = await db.query(
+      'SELECT * FROM users WHERE email = $1',
+      [githubUser.email]
+    );
+
+    let user;
+
+    if (result.rows.length === 0) {
+      const insertResult = await db.query(
+        `INSERT INTO users (name, email, password)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
+        [
+          githubUser.name || githubUser.login,
+          githubUser.email,
+          'github-oauth-user'
+        ]
+      );
+
+      user = insertResult.rows[0];
+    } else {
+      user = result.rows[0];
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.redirect(
+      `https://ai-testing-platform-one.vercel.app/github-success?token=${token}`
+    );
+
+  } catch (error) {
+    console.log(error.message);
+    res.send('GitHub login failed');
+  }
 });
 
 app.post('/login', (req, res) => {
