@@ -107,6 +107,17 @@ function App() {
     return () => socket.disconnect();
   }, []);
 
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const githubToken = params.get('token');
+
+  if (githubToken) {
+    localStorage.setItem('token', githubToken);
+    setToken(githubToken);
+    window.history.replaceState({}, document.title, '/');
+  }
+}, []);
+
   const handleAuthChange = (e) => {
     setAuthForm({
       ...authForm,
@@ -527,6 +538,15 @@ AI detected broken selectors and recovered automatically using alternative selec
           <button onClick={authMode === 'login' ? login : signup}>
             {authMode === 'login' ? 'Login' : 'Sign Up'}
           </button>
+
+          <button
+             onClick={() => {
+               window.location.href =
+                 `${API_URL}/auth/github`;
+           }}
+           >
+            Login with GitHub
+           </button>
 
           <p className="switch-auth">
             {authMode === 'login' ? 'No account?' : 'Already have an account?'}{' '}
