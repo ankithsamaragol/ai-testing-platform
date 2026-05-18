@@ -107,14 +107,14 @@ function App() {
     return () => socket.disconnect();
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const githubToken = params.get('token');
 
   if (githubToken) {
-    localStorage.setItem('token', githubToken);
-    setToken(githubToken);
+    localStorage.setItem('ai-token', githubToken);
     window.history.replaceState({}, document.title, '/');
+    window.location.reload();
   }
 }, []);
 
