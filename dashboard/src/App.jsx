@@ -770,11 +770,10 @@ const failRate = latestRun
           rel="noreferrer"
         >
           Open Repository
-
-          <button onClick={() => linkRepoToProject(repo.full_name)}>
+        </a>
+        <button onClick={() => linkRepoToProject(repo.full_name)}>
           Link to Selected Project
           </button>
-        </a>
       </div>
     ))}
   </div>
