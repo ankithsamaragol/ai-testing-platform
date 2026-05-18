@@ -275,17 +275,26 @@ app.post('/projects/link-github', verifyToken, async (req, res) => {
   }
 
   try {
-    await db.query(
-      `UPDATE projects
-       SET github_repo = $1, github_branch = $2
-       WHERE id = $3 AND user_id = $4`,
-      [repo, branch || 'main', projectId, req.user.id]
-    );
+    const result = await db.query(
+  `UPDATE projects
+   SET github_repo = $1, github_branch = $2
+   WHERE id = $3 AND user_id = $4
+   RETURNING *`,
+  [repo, branch || 'main', projectId, req.user.id]
+);
 
-    res.json({
-      success: true,
-      message: 'GitHub repository linked to project'
-    });
+if (result.rows.length === 0) {
+  return res.json({
+    success: false,
+    message: 'No matching project found to link'
+  });
+}
+
+res.json({
+  success: true,
+  message: 'GitHub repository linked to project',
+  project: result.rows[0]
+});
 
   } catch (err) {
     console.log('Link GitHub repo failed:', err.message);
