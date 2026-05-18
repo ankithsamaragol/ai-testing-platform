@@ -189,9 +189,9 @@ if (!primaryEmail) {
       { expiresIn: '7d' }
     );
 
-    res.redirect(
-      `https://ai-testing-platform-one.vercel.app/github-success?token=${token}`
-    );
+   res.redirect(
+  `https://ai-testing-platform-one.vercel.app/?token=${token}`
+);
 
   } catch (error) {
     console.log(error.message);
