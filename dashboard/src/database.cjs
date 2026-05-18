@@ -62,4 +62,14 @@ db.query(`
   )
 `);
 
+db.query(`
+  ALTER TABLE projects
+  ADD COLUMN IF NOT EXISTS github_repo TEXT
+`);
+
+db.query(`
+  ALTER TABLE projects
+  ADD COLUMN IF NOT EXISTS github_branch TEXT DEFAULT 'main'
+`);
+
 module.exports = db;

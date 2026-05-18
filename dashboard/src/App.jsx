@@ -73,6 +73,36 @@ function App() {
   }
 };
 
+const linkRepoToProject = async (repoFullName) => {
+  if (!selectedProject) {
+    setPopup('Please select a project first');
+    return;
+  }
+
+  const token = localStorage.getItem('ai-token');
+
+  const response = await fetch(`${API_URL}/projects/link-github`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      projectId: selectedProject.id,
+      repo: repoFullName,
+      branch: 'main'
+    })
+  });
+
+  const data = await response.json();
+
+  setPopup(data.message);
+
+  if (data.success) {
+    loadProjects();
+  }
+};
+
   const loadTestHistory = async () => {
     const token = localStorage.getItem('ai-token');
 
@@ -740,6 +770,10 @@ const failRate = latestRun
           rel="noreferrer"
         >
           Open Repository
+
+          <button onClick={() => linkRepoToProject(repo.full_name)}>
+          Link to Selected Project
+          </button>
         </a>
       </div>
     ))}

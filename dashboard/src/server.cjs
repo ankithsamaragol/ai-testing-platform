@@ -264,6 +264,39 @@ app.get('/github/repos', verifyToken, async (req, res) => {
   }
 });
 
+app.post('/projects/link-github', verifyToken, async (req, res) => {
+  const { projectId, repo, branch } = req.body;
+
+  if (!projectId || !repo) {
+    return res.json({
+      success: false,
+      message: 'Project and repository are required'
+    });
+  }
+
+  try {
+    await db.query(
+      `UPDATE projects
+       SET github_repo = $1, github_branch = $2
+       WHERE id = $3 AND user_id = $4`,
+      [repo, branch || 'main', projectId, req.user.id]
+    );
+
+    res.json({
+      success: true,
+      message: 'GitHub repository linked to project'
+    });
+
+  } catch (err) {
+    console.log('Link GitHub repo failed:', err.message);
+
+    res.json({
+      success: false,
+      message: 'Failed to link GitHub repository'
+    });
+  }
+});
+
 app.post('/login', (req, res) => {
 
   const { email, password } = req.body;
