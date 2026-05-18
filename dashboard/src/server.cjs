@@ -139,9 +139,26 @@ app.get('/github/callback', async (req, res) => {
 
     const githubUser = userResponse.data;
 
+    const emailResponse = await axios.get(
+  'https://api.github.com/user/emails',
+  {
+    headers: {
+      Authorization: `token ${accessToken}`
+    }
+  }
+);
+
+const primaryEmail = emailResponse.data.find(
+  (email) => email.primary && email.verified
+)?.email;
+
+if (!primaryEmail) {
+  return res.send('GitHub login failed: No verified email found');
+}
+
     let result = await db.query(
       'SELECT * FROM users WHERE email = $1',
-      [githubUser.email]
+      [primaryEmail]
     );
 
     let user;
@@ -153,7 +170,7 @@ app.get('/github/callback', async (req, res) => {
          RETURNING *`,
         [
           githubUser.name || githubUser.login,
-          githubUser.email,
+          primaryEmail,
           'github-oauth-user'
         ]
       );
