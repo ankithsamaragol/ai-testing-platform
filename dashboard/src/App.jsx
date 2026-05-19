@@ -421,7 +421,11 @@ const runRepoTests = async () => {
   const data = await response.json();
 
   setLogs(data.output || '');
+  if (data.success) {
+  setAiReport([]);
+} else {
   setAiReport(data.aiAnalysis || []);
+}
   setPopup(data.message || (data.success ? 'Repository tests completed' : 'Repository tests failed'));
   setTestStatus(data.success ? 'Repository tests completed' : 'Repository tests failed');
 };
