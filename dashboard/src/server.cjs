@@ -992,6 +992,7 @@ app.post('/run-repo-tests', verifyToken, async (req, res) => {
     });
 
     installProcess.on('close', async (installCode) => {
+      let output = '';
       if (installCode !== 0) {
         return res.json({
           success: false,
@@ -1030,8 +1031,6 @@ const testProcess = spawn(
     shell: true
   }
 );
-
-      let output = '';
 
       testProcess.stdout.on('data', (data) => {
         const text = data.toString();
