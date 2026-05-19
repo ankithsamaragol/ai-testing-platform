@@ -55,6 +55,11 @@ const scheduledJobs = {};
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../../')));
 
+app.use(
+  '/repo-artifacts',
+  express.static(path.join(__dirname, '../../temp-repos'))
+);
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -1087,14 +1092,31 @@ const testProcess = spawn(
 
      testProcess.on('close', async (code) => {
 
+      const screenshotDir = path.join(tempDir, 'test-results');
+let failureScreenshots = [];
+
+if (await fsExtra.pathExists(screenshotDir)) {
+  const files = await fsExtra.readdir(screenshotDir, {
+    recursive: true
+  });
+
+  failureScreenshots = files
+    .filter(file =>
+      file.includes('test-failed') &&
+      file.endsWith('.png')
+    )
+    .map(file => `/repo-artifacts/${file}`);
+}
+
   const aiAnalysis = analyzeTestFailure(output);
 
   res.json({
-    success: code === 0,
-    completed: true,
-    output,
-    aiAnalysis
-  });
+  success: code === 0,
+  completed: true,
+  output,
+  aiAnalysis,
+  screenshots: failureScreenshots
+});
 
 });
     });
