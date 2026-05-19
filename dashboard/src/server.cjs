@@ -1105,7 +1105,7 @@ if (await fsExtra.pathExists(screenshotDir)) {
       file.includes('test-failed') &&
       file.endsWith('.png')
     )
-    .map(file => `/repo-artifacts/${file}`);
+    .map(file => `/repo-artifacts/${project.id}/test-results/${file}`);
 }
 
   const aiAnalysis = analyzeTestFailure(output);
