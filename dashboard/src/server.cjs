@@ -940,38 +940,65 @@ const detectFramework = async (repoPath) => {
 const analyzeTestFailure = (logs) => {
   const analysis = [];
 
+  // Assertion failure detection
+  if (logs.includes('toContainText') && logs.includes('Expected substring')) {
+    const failedLineMatch = logs.match(/at (.*):(\d+):(\d+)/);
+    const expectedMatch = logs.match(/- Expected substring\s+- \d+\s+.*?- ([^\n]+)/s);
+    const actualMatch = logs.match(/Received string.*?\+\s(.+?)Call log:/s);
+
+    analysis.push({
+      type: 'Assertion Failure',
+      severity: 'high',
+      reason: 'Expected text does not match actual page content',
+      failedFile: failedLineMatch ? failedLineMatch[1] : 'Unknown file',
+      failedLine: failedLineMatch ? failedLineMatch[2] : 'Unknown',
+      fix: 'Update assertion with correct expected content',
+      replacementCode: "await expect(page.locator('body')).toContainText('Playwright')",
+      confidence: 92
+    });
+  }
+
+  // Timeout detection
   if (logs.includes('Timeout')) {
     analysis.push({
       type: 'Timeout Error',
       severity: 'medium',
-      fix: 'Increase timeout or improve wait strategy'
+      reason: 'Element or action exceeded wait time',
+      fix: 'Increase timeout or improve wait strategy',
+      confidence: 80
     });
   }
 
-  if (
-    logs.includes('locator') ||
-    logs.includes('selector')
-  ) {
+  // Selector failure
+  if (logs.includes('locator') || logs.includes('selector')) {
     analysis.push({
       type: 'Selector Failure',
       severity: 'high',
-      fix: 'Use stable selectors like data-testid or role selectors'
+      reason: 'Element selector could not be resolved',
+      fix: 'Use stable selectors like data-testid, getByRole, or getByLabel',
+      confidence: 88
     });
   }
 
+  // Network failure
   if (logs.includes('net::ERR')) {
     analysis.push({
       type: 'Network Failure',
       severity: 'high',
-      fix: 'Check server availability or API connectivity'
+      reason: 'Application/network connectivity issue',
+      fix: 'Check server availability or API connectivity',
+      confidence: 85
     });
   }
 
+  // Browser closure
   if (logs.includes('Target page')) {
     analysis.push({
       type: 'Browser Context Closed',
       severity: 'medium',
-      fix: 'Avoid actions after page/browser closure'
+      reason: 'Test attempted action after browser/page closed',
+      fix: 'Avoid actions after page/browser closure',
+      confidence: 78
     });
   }
 
