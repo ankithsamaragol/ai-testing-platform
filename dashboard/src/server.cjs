@@ -936,7 +936,7 @@ app.post('/run-repo-tests', verifyToken, async (req, res) => {
 
       io.emit('test-log', `Running repository tests...\n`);
 
-      const testProcess = spawn('npm', ['test'], {
+      const testProcess = spawn('npx', ['playwright', 'test'], {
         cwd: tempDir,
         shell: true
       });
