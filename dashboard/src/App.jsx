@@ -48,6 +48,7 @@ function App() {
     });
 
     const data = await response.json();
+    console.log('Repo screenshots:', data.screenshots);
 
     if (data.success) {
       setProjects(data.projects);
@@ -426,8 +427,12 @@ const runRepoTests = async () => {
 } else {
   setAiReport(data.aiAnalysis || []);
 }
-  setScreenshots(data.screenshots || []);
-  
+  setScreenshots(
+  (data.screenshots || []).map((shot) =>
+    shot.startsWith('http') ? shot : `${API_URL}${shot}`
+  )
+);
+
   setPopup(data.message || (data.success ? 'Repository tests completed' : 'Repository tests failed'));
   setTestStatus(data.success ? 'Repository tests completed' : 'Repository tests failed');
 };
