@@ -867,6 +867,71 @@ Open the AI Tester dashboard and review Failure Investigation, screenshots, and 
 
 });
 
+const detectFramework = async (repoPath) => {
+  const packageJsonPath = path.join(repoPath, 'package.json');
+
+  if (!(await fsExtra.pathExists(packageJsonPath))) {
+    return {
+      framework: 'unknown',
+      testCommand: null
+    };
+  }
+
+  const packageJson = await fsExtra.readJson(packageJsonPath);
+
+  const deps = {
+    ...packageJson.dependencies,
+    ...packageJson.devDependencies
+  };
+
+  const scripts = packageJson.scripts || {};
+
+  // Playwright
+  if (deps['@playwright/test']) {
+    return {
+      framework: 'playwright',
+      testCommand: 'npx playwright test'
+    };
+  }
+
+  // Cypress
+  if (deps['cypress']) {
+    return {
+      framework: 'cypress',
+      testCommand: 'npx cypress run'
+    };
+  }
+
+  // Jest
+  if (deps['jest']) {
+    return {
+      framework: 'jest',
+      testCommand: 'npm test'
+    };
+  }
+
+  // Vitest
+  if (deps['vitest']) {
+    return {
+      framework: 'vitest',
+      testCommand: 'npx vitest run'
+    };
+  }
+
+  // Generic npm test
+  if (scripts.test) {
+    return {
+      framework: 'generic',
+      testCommand: 'npm test'
+    };
+  }
+
+  return {
+    framework: 'unknown',
+    testCommand: null
+  };
+};
+
 app.post('/run-repo-tests', verifyToken, async (req, res) => {
   const { projectId } = req.body;
 
@@ -926,7 +991,7 @@ app.post('/run-repo-tests', verifyToken, async (req, res) => {
       io.emit('test-log', data.toString());
     });
 
-    installProcess.on('close', (installCode) => {
+    installProcess.on('close', async (installCode) => {
       if (installCode !== 0) {
         return res.json({
           success: false,
@@ -934,12 +999,35 @@ app.post('/run-repo-tests', verifyToken, async (req, res) => {
         });
       }
 
-      io.emit('test-log', `Running repository tests...\n`);
+      const detected = await detectFramework(tempDir);
 
-      const testProcess = spawn('npx', ['playwright', 'test'], {
-        cwd: tempDir,
-        shell: true
-      });
+io.emit(
+  'test-log',
+  `Detected framework: ${detected.framework}\n`
+);
+
+if (!detected.testCommand) {
+  return res.json({
+    success: false,
+    message: 'No supported testing framework detected'
+  });
+}
+
+io.emit(
+  'test-log',
+  `Running command: ${detected.testCommand}\n`
+);
+
+const commandParts = detected.testCommand.split(' ');
+
+const testProcess = spawn(
+  commandParts[0],
+  commandParts.slice(1),
+  {
+    cwd: tempDir,
+    shell: true
+  }
+);
 
       let output = '';
 
