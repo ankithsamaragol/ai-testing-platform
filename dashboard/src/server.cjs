@@ -16,6 +16,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const { Resend } = require('resend');
 const axios = require('axios');
+const simpleGit = require('simple-git');
+const fsExtra = require('fs-extra');
 
 const app = express();
 
@@ -863,6 +865,113 @@ Open the AI Tester dashboard and review Failure Investigation, screenshots, and 
 
 });
 
+});
+
+app.post('/run-repo-tests', verifyToken, async (req, res) => {
+  const { projectId } = req.body;
+
+  if (!projectId) {
+    return res.json({
+      success: false,
+      message: 'Project ID is required'
+    });
+  }
+
+  try {
+    const projectResult = await db.query(
+      'SELECT * FROM projects WHERE id = $1 AND user_id = $2',
+      [projectId, req.user.id]
+    );
+
+    if (projectResult.rows.length === 0) {
+      return res.json({
+        success: false,
+        message: 'Project not found'
+      });
+    }
+
+    const project = projectResult.rows[0];
+
+    if (!project.github_repo) {
+      return res.json({
+        success: false,
+        message: 'No GitHub repo linked to this project'
+      });
+    }
+
+    const tempDir = path.join(__dirname, '../../temp-repos', String(project.id));
+
+    await fsExtra.remove(tempDir);
+    await fsExtra.ensureDir(tempDir);
+
+    const repoUrl = `https://github.com/${project.github_repo}.git`;
+
+    io.emit('test-log', `Cloning repository: ${project.github_repo}\n`);
+
+    await simpleGit().clone(repoUrl, tempDir);
+
+    io.emit('test-log', `Repository cloned successfully\n`);
+    io.emit('test-log', `Installing dependencies...\n`);
+
+    const installProcess = spawn('npm', ['install'], {
+      cwd: tempDir,
+      shell: true
+    });
+
+    installProcess.stdout.on('data', (data) => {
+      io.emit('test-log', data.toString());
+    });
+
+    installProcess.stderr.on('data', (data) => {
+      io.emit('test-log', data.toString());
+    });
+
+    installProcess.on('close', (installCode) => {
+      if (installCode !== 0) {
+        return res.json({
+          success: false,
+          message: 'Dependency installation failed'
+        });
+      }
+
+      io.emit('test-log', `Running repository tests...\n`);
+
+      const testProcess = spawn('npm', ['test'], {
+        cwd: tempDir,
+        shell: true
+      });
+
+      let output = '';
+
+      testProcess.stdout.on('data', (data) => {
+        const text = data.toString();
+        output += text;
+        io.emit('test-log', text);
+      });
+
+      testProcess.stderr.on('data', (data) => {
+        const text = data.toString();
+        output += text;
+        io.emit('test-log', text);
+      });
+
+      testProcess.on('close', async (code) => {
+        res.json({
+          success: code === 0,
+          completed: true,
+          output
+        });
+      });
+    });
+
+  } catch (err) {
+    console.log('Run repo tests failed:', err.message);
+
+    res.json({
+      success: false,
+      message: 'Failed to run repository tests'
+    });
+  }
 });
 
 db.query(
