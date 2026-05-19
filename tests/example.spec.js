@@ -1,38 +1,36 @@
 const { test, expect } = require('@playwright/test');
 
 test('AI Search Bot', async ({ page }) => {
+  test.setTimeout(60000);
 
-  // Open Playwright website
-  await page.goto('https://playwright.dev');
-
-  // Wait for page load
-  await page.waitForLoadState('networkidle');
-
-  // Verify heading exists
-  await expect(
-    page.locator('h1')
-  ).toContainText('Playwright');
-
-  // Click Get Started
-  await page.click('text=Get started');
-
-  // Wait for next page
-  await page.waitForLoadState('networkidle');
-
-  // Verify installation text exists
-  await expect(page.locator('body'))
-     .toContainText('Get started');
-
-  // Take screenshot
-  try {
-  await page.screenshot({
-    path: 'playwright-page.png',
-    fullPage: true
+  await page.goto('https://playwright.dev', {
+    waitUntil: 'domcontentloaded',
+    timeout: 30000
   });
-} catch (err) {
-  console.log('Screenshot skipped:', err.message);
-}
+
+  await expect(page.locator('h1')).toContainText('Playwright', {
+    timeout: 15000
+  });
+
+  await page.getByRole('link', { name: /get started/i }).first().click();
+
+  await expect(page).toHaveURL(/.*intro.*/, {
+    timeout: 15000
+  });
+
+  await expect(page.locator('body')).toContainText('Installation', {
+    timeout: 15000
+  });
+
+  try {
+    await page.screenshot({
+      path: 'playwright-page.png',
+      fullPage: false,
+      timeout: 10000
+    });
+  } catch (err) {
+    console.log('Screenshot skipped:', err.message);
+  }
 
   console.log('AI automation test successful');
-
 });
