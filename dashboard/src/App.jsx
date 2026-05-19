@@ -1103,11 +1103,11 @@ This run appears stable.`}
         <p><strong>Severity:</strong> {item.severity}</p>
         <p><strong>Suggested Fix:</strong> {item.fix}</p>
 
-        {item.fixedCode && (
+        {item.replacementCode && (
           <>
             <p><strong>AI Suggested Code Fix:</strong></p>
             <pre className="code-preview">
-              {item.fixedCode}
+              {item.replacementCode}
             </pre>
           </>
         )}
