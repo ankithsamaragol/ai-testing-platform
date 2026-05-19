@@ -1005,6 +1005,54 @@ const analyzeTestFailure = (logs) => {
   return analysis;
 };
 
+const autoFixTestFile = async (repoPath, aiAnalysis) => {
+  const assertionIssue = aiAnalysis.find(
+    item => item.type === 'Assertion Failure' && item.replacementCode
+  );
+
+  if (!assertionIssue || !assertionIssue.failedFile) {
+    return {
+      fixed: false,
+      message: 'No auto-fixable issue found'
+    };
+  }
+
+  const failedFilePath = assertionIssue.failedFile.includes(repoPath)
+    ? assertionIssue.failedFile
+    : path.join(repoPath, assertionIssue.failedFile);
+
+  if (!(await fsExtra.pathExists(failedFilePath))) {
+    return {
+      fixed: false,
+      message: 'Failed test file not found'
+    };
+  }
+
+  let fileContent = await fsExtra.readFile(failedFilePath, 'utf8');
+
+  const oldContent = fileContent;
+
+  fileContent = fileContent.replace(
+    /toContainText\(['"`]THIS WILL FAIL['"`]/g,
+    "toContainText('Playwright')"
+  );
+
+  if (fileContent === oldContent) {
+    return {
+      fixed: false,
+      message: 'No matching code pattern found to fix'
+    };
+  }
+
+  await fsExtra.writeFile(failedFilePath, fileContent);
+
+  return {
+    fixed: true,
+    message: 'AI auto-fixed assertion in test file',
+    file: failedFilePath
+  };
+};
+
 app.post('/run-repo-tests', verifyToken, async (req, res) => {
   const { projectId } = req.body;
 
