@@ -1005,6 +1005,7 @@ io.emit(
   'test-log',
   `Detected framework: ${detected.framework}\n`
 );
+output += `Detected framework: ${detected.framework}\n`;
 
 if (!detected.testCommand) {
   return res.json({
@@ -1017,6 +1018,7 @@ io.emit(
   'test-log',
   `Running command: ${detected.testCommand}\n`
 );
+output += `Running command: ${detected.testCommand}\n`;
 
 const commandParts = detected.testCommand.split(' ');
 
