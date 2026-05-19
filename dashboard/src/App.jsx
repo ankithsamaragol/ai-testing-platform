@@ -395,6 +395,36 @@ const stopSchedule = async () => {
 
 };
 
+const runRepoTests = async () => {
+  if (!selectedProject) {
+    setPopup('Please select a project first');
+    return;
+  }
+
+  const token = localStorage.getItem('ai-token');
+
+  setLogs('');
+  setPopup('Running repository tests...');
+  setTestStatus('Running repository tests...');
+
+  const response = await fetch(`${API_URL}/run-repo-tests`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      projectId: selectedProject.id
+    })
+  });
+
+  const data = await response.json();
+
+  setLogs(data.output || '');
+  setPopup(data.message || (data.success ? 'Repository tests completed' : 'Repository tests failed'));
+  setTestStatus(data.success ? 'Repository tests completed' : 'Repository tests failed');
+};
+
   const runTests = async () => {
     setLogs('');
     setPopup('Running AI Tests...');
@@ -708,6 +738,7 @@ const failRate = latestRun
             <button onClick={generateSuite}>📦 Generate Test Suite</button>
             <button className="orange" onClick={autonomousAITest}>🚀 Autonomous AI Test</button>
             <button onClick={loadGithubRepos}>🐙 Load GitHub Repositories</button>
+            <button onClick={runRepoTests}>🧪 Run Repo Tests</button>
           </div>
 
           <button className="run-btn" onClick={runTests}>
