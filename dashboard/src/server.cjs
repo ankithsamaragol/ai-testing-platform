@@ -932,6 +932,47 @@ const detectFramework = async (repoPath) => {
   };
 };
 
+const analyzeTestFailure = (logs) => {
+  const analysis = [];
+
+  if (logs.includes('Timeout')) {
+    analysis.push({
+      type: 'Timeout Error',
+      severity: 'medium',
+      fix: 'Increase timeout or improve wait strategy'
+    });
+  }
+
+  if (
+    logs.includes('locator') ||
+    logs.includes('selector')
+  ) {
+    analysis.push({
+      type: 'Selector Failure',
+      severity: 'high',
+      fix: 'Use stable selectors like data-testid or role selectors'
+    });
+  }
+
+  if (logs.includes('net::ERR')) {
+    analysis.push({
+      type: 'Network Failure',
+      severity: 'high',
+      fix: 'Check server availability or API connectivity'
+    });
+  }
+
+  if (logs.includes('Target page')) {
+    analysis.push({
+      type: 'Browser Context Closed',
+      severity: 'medium',
+      fix: 'Avoid actions after page/browser closure'
+    });
+  }
+
+  return analysis;
+};
+
 app.post('/run-repo-tests', verifyToken, async (req, res) => {
   const { projectId } = req.body;
 
@@ -1044,13 +1085,18 @@ const testProcess = spawn(
         io.emit('test-log', text);
       });
 
-      testProcess.on('close', async (code) => {
-        res.json({
-          success: code === 0,
-          completed: true,
-          output
-        });
-      });
+     testProcess.on('close', async (code) => {
+
+  const aiAnalysis = analyzeTestFailure(output);
+
+  res.json({
+    success: code === 0,
+    completed: true,
+    output,
+    aiAnalysis
+  });
+
+});
     });
 
   } catch (err) {
