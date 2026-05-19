@@ -421,6 +421,7 @@ const runRepoTests = async () => {
   const data = await response.json();
 
   setLogs(data.output || '');
+  setAiReport(data.aiAnalysis || []);
   setPopup(data.message || (data.success ? 'Repository tests completed' : 'Repository tests failed'));
   setTestStatus(data.success ? 'Repository tests completed' : 'Repository tests failed');
 };
@@ -1083,7 +1084,17 @@ This run appears stable.`}
 
           <div className="panel ai-panel">
             <h2>🤖 AI Bug Analysis</h2>
-            <pre>{aiReport || 'AI analysis will appear after test execution.'}</pre>
+           {Array.isArray(aiReport) && aiReport.length > 0 ? (
+  aiReport.map((item, index) => (
+    <div key={index} className="ai-analysis-card">
+      <p><strong>Issue:</strong> {item.type}</p>
+      <p><strong>Severity:</strong> {item.severity}</p>
+      <p><strong>Suggested Fix:</strong> {item.fix}</p>
+    </div>
+  ))
+) : (
+  <pre>AI analysis will appear after test execution.</pre>
+)}
           </div>
         </section>
 
