@@ -1017,9 +1017,11 @@ const autoFixTestFile = async (repoPath, aiAnalysis) => {
     };
   }
 
-  const failedFilePath = assertionIssue.failedFile.includes(repoPath)
-    ? assertionIssue.failedFile
-    : path.join(repoPath, assertionIssue.failedFile);
+  const relativeFailedFile = assertionIssue.failedFile.includes('/tests/')
+  ? assertionIssue.failedFile.split('/tests/')[1]
+  : assertionIssue.failedFile;
+
+const failedFilePath = path.join(repoPath, 'tests', relativeFailedFile);
 
   if (!(await fsExtra.pathExists(failedFilePath))) {
     return {
@@ -1183,16 +1185,64 @@ if (await fsExtra.pathExists(screenshotDir)) {
     .map(file => `/repo-artifacts/${project.id}/test-results/${file}`);
 }
 
-  const aiAnalysis = analyzeTestFailure(output);
+ const aiAnalysis = analyzeTestFailure(output);
 
-  res.json({
+if (code !== 0) {
+  io.emit('test-log', '\n🤖 AI attempting automatic fix...\n');
+
+  const autoFixResult = await autoFixTestFile(tempDir, aiAnalysis);
+  io.emit('test-log', `🤖 Auto-fix result: ${autoFixResult.message}\n`);
+
+  if (autoFixResult.fixed) {
+    io.emit('test-log', `✅ ${autoFixResult.message}\n`);
+    io.emit('test-log', '🔁 Re-running tests after AI fix...\n');
+
+    const rerunProcess = spawn(
+      commandParts[0],
+      commandParts.slice(1),
+      {
+        cwd: tempDir,
+        shell: true
+      }
+    );
+
+    let rerunOutput = '';
+
+    rerunProcess.stdout.on('data', (data) => {
+      const text = data.toString();
+      rerunOutput += text;
+      io.emit('test-log', text);
+    });
+
+    rerunProcess.stderr.on('data', (data) => {
+      const text = data.toString();
+      rerunOutput += text;
+      io.emit('test-log', text);
+    });
+
+    rerunProcess.on('close', (rerunCode) => {
+      res.json({
+        success: rerunCode === 0,
+        completed: true,
+        output: output + '\n' + rerunOutput,
+        aiAnalysis,
+        screenshots: failureScreenshots,
+        autoFixed: true
+      });
+    });
+
+    return;
+  }
+}
+
+res.json({
   success: code === 0,
   completed: true,
   output,
   aiAnalysis,
-  screenshots: failureScreenshots
+  screenshots: failureScreenshots,
+  autoFixed: false
 });
-
 });
     });
 
