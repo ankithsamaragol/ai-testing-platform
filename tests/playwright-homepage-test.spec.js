@@ -8,7 +8,7 @@ test('Playwright Homepage Test', async ({ page }) => {
     timeout: 30000
   });
 
-  await expect(page.locator('body')).toContainText('Playwright', {
+  await expect(page.locator('body')).toContainText('THIS WILL FAIL', {
     timeout: 15000
   });
 
